@@ -1,8 +1,8 @@
 {
   "name": "ecommerce-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Express and MongoDB e-commerce API with categories, products, cart, and orders modules.",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",

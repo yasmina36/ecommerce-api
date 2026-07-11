@@ -14,6 +14,7 @@ const errorHandler = require("./middleware/errorHandler");
 const app = express();
 
 app.use(express.json());
+app.use(mongoSanitize());
 
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);

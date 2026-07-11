@@ -15,7 +15,7 @@ const errorHandler = (err, req, res, next) => {
   }
 
   if (err.code === 11000) {
-    statusCode = 409;
+    statusCode = 400;
     message = "Duplicate value";
   }
 

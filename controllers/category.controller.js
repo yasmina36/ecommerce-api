@@ -1,4 +1,4 @@
-const Category = require("../models/category.model");
+const Category = require("../models/Category.model");
 
 exports.getAllCategories = async (req, res) => {
   const categories = await Category.find();
@@ -33,6 +33,10 @@ exports.createCategory = async (req, res) => {
   });
 };
 exports.updateCategory = async (req, res) => {
+  if (req.body.name) {
+    req.body.slug = req.body.name.toLowerCase().replace(/\s+/g, "-");
+  }
+
   const category = await Category.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,

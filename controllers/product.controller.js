@@ -1,5 +1,5 @@
 const Product = require("../models/product.model");
-const Category = require("../models/category.model");
+const Category = require("../models/Category.model");
 
 exports.getAllProducts = async (req, res) => {
   const filter = {};
@@ -54,7 +54,10 @@ exports.getAllProducts = async (req, res) => {
 };
 
 exports.getProductById = async (req, res) => {
-  const product = await Product.findById(req.params.id).populate("category");
+  const product = await Product.findById(req.params.id).populate(
+    "category",
+    "name description",
+  );
 
   if (!product) {
     return res.status(404).json({
