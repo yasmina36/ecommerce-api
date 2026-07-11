@@ -1,0 +1,640 @@
+{
+  "info": {
+    "_postman_id": "f1c7df24-31d5-4c39-9d79-6e55b7276403",
+    "name": "E-Commerce API",
+    "description": "Postman collection for the current Express e-commerce API routes and controllers.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    }
+  ],
+  "item": [
+    {
+      "name": "Categories",
+      "description": "All category endpoints.",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "description": "Fetch all categories.",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Category By ID",
+          "request": {
+            "method": "GET",
+            "description": "Fetch a single category by its MongoDB ID.",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/{{categoryId}}",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories",
+                "{{categoryId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "description": "Create a category using the current Category model fields.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Books\",\n  \"description\": \"Printed books, eBooks, and reading accessories\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/categories",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PATCH",
+            "description": "Update a category by ID.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Books and Media\",\n  \"description\": \"Books, magazines, eBooks, and media accessories\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/{{categoryId}}",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories",
+                "{{categoryId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Category",
+          "request": {
+            "method": "DELETE",
+            "description": "Delete a category by ID.",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/{{categoryId}}",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories",
+                "{{categoryId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "description": "All product endpoints.",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "description": "Fetch all products.",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Product By ID",
+          "request": {
+            "method": "GET",
+            "description": "Fetch a single product by its MongoDB ID.",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{productId}}",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "{{productId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "description": "Create a product. The category field must reference an existing category ID.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Node.js Design Patterns\",\n  \"description\": \"A practical guide to scalable Node.js applications\",\n  \"price\": 49.99,\n  \"stock\": 25,\n  \"category\": \"{{categoryId}}\",\n  \"images\": [\n    \"https://example.com/images/nodejs-design-patterns-front.jpg\",\n    \"https://example.com/images/nodejs-design-patterns-back.jpg\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PATCH",
+            "description": "Update a product by ID. Supplying stock lets the controller recalculate inStock.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Node.js Design Patterns - 4th Edition\",\n  \"description\": \"Updated edition with modern Node.js architecture patterns\",\n  \"price\": 59.99,\n  \"stock\": 18,\n  \"category\": \"{{categoryId}}\",\n  \"images\": [\n    \"https://example.com/images/nodejs-design-patterns-4e-front.jpg\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{productId}}",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "{{productId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "description": "Delete a product by ID.",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{productId}}",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "{{productId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Products By Category",
+          "request": {
+            "method": "GET",
+            "description": "Fetch products filtered by category ID.",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products?category={{categoryId}}",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "{{categoryId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Products By Price Range",
+          "request": {
+            "method": "GET",
+            "description": "Fetch products filtered by minimum and maximum price.",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products?minPrice=20&maxPrice=1000",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "minPrice",
+                  "value": "20"
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "1000"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get In-Stock Products By Search",
+          "request": {
+            "method": "GET",
+            "description": "Fetch in-stock products matching the search term in name or description.",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products?inStock=true&search=book",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "inStock",
+                  "value": "true"
+                },
+                {
+                  "key": "search",
+                  "value": "book"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Cart",
+      "description": "All cart endpoints.",
+      "item": [
+        {
+          "name": "Add Item To Cart",
+          "request": {
+            "method": "POST",
+            "description": "Add a product to the cart or increase its quantity if it already exists in the cart.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"{{productId}}\",\n  \"quantity\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/cart/items",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cart",
+                "items"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Cart Item",
+          "request": {
+            "method": "PATCH",
+            "description": "Set the quantity of a cart item. Using 0 removes the product from the cart.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/cart/items/{{productId}}",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cart",
+                "items",
+                "{{productId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Cart Item",
+          "request": {
+            "method": "DELETE",
+            "description": "Remove a specific product from the cart.",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cart/items/{{productId}}",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cart",
+                "items",
+                "{{productId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Cart",
+          "request": {
+            "method": "GET",
+            "description": "Fetch the current cart. If no cart exists yet, the API creates an empty cart.",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cart",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cart"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Clear Cart",
+          "request": {
+            "method": "DELETE",
+            "description": "Remove all items from the cart and reset the total price.",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cart",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cart"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "description": "All order endpoints.",
+      "item": [
+        {
+          "name": "Create Order From Cart",
+          "request": {
+            "method": "POST",
+            "description": "Checkout the current cart into a new order.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shippingAddress\": \"123 Tahrir Street, Cairo, Egypt\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/orders",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "orders"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Orders",
+          "request": {
+            "method": "GET",
+            "description": "Fetch all orders sorted by creation date descending.",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/orders",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "orders"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Order By ID",
+          "request": {
+            "method": "GET",
+            "description": "Fetch a single order by its MongoDB ID.",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/{{orderId}}",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "orders",
+                "{{orderId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Order Status",
+          "request": {
+            "method": "PATCH",
+            "description": "Update the status of an existing order.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"processing\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/{{orderId}}/status",
+              "protocol": "http",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "orders",
+                "{{orderId}}",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
