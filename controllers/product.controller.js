@@ -1,7 +1,9 @@
 const Product = require("../models/product.model");
 const Category = require("../models/category.model");
+const AppError = require("../utils/appError");
+const asyncHandler = require("../utils/asyncHandler");
 
-exports.getAllProducts = async (req, res) => {
+exports.getAllProducts = asyncHandler(async (req, res) => {
   const filter = {};
 
   if (req.query.category) {
@@ -20,7 +22,6 @@ exports.getAllProducts = async (req, res) => {
     }
   }
 
-  // inStock is a virtual field, so filter using stock instead.
   if (req.query.inStock === "true") {
     filter.stock = { $gt: 0 };
   }
@@ -46,64 +47,54 @@ exports.getAllProducts = async (req, res) => {
     ];
   }
 
-  const products = await Product.find(filter).populate(
-    "category",
-    "name description"
-  );
+  const products = await Product.find(filter).populate("category", "name");
 
   res.status(200).json({
-    success: true,
-    count: products.length,
+    status: "success",
+    message: "Products retrieved successfully",
     data: products,
   });
-};
+});
 
-exports.getProductById = async (req, res) => {
+exports.getProductById = asyncHandler(async (req, res, next) => {
   const product = await Product.findById(req.params.id).populate(
     "category",
     "name description"
   );
 
   if (!product) {
-    return res.status(404).json({
-      success: false,
-      message: "Product not found",
-    });
+    return next(new AppError("Product not found", 404));
   }
 
   res.status(200).json({
-    success: true,
+    status: "success",
+    message: "Product retrieved successfully",
     data: product,
   });
-};
+});
 
-exports.createProduct = async (req, res) => {
+exports.createProduct = asyncHandler(async (req, res, next) => {
   const category = await Category.findById(req.body.category);
 
   if (!category) {
-    return res.status(404).json({
-      success: false,
-      message: "Category not found",
-    });
+    return next(new AppError("Category not found", 404));
   }
 
   const product = await Product.create(req.body);
 
   res.status(201).json({
-    success: true,
+    status: "success",
+    message: "Product created successfully",
     data: product,
   });
-};
+});
 
-exports.updateProduct = async (req, res) => {
+exports.updateProduct = asyncHandler(async (req, res, next) => {
   if (req.body.category) {
     const category = await Category.findById(req.body.category);
 
     if (!category) {
-      return res.status(404).json({
-        success: false,
-        message: "Category not found",
-      });
+      return next(new AppError("Category not found", 404));
     }
   }
 
@@ -117,30 +108,26 @@ exports.updateProduct = async (req, res) => {
   ).populate("category", "name description");
 
   if (!product) {
-    return res.status(404).json({
-      success: false,
-      message: "Product not found",
-    });
+    return next(new AppError("Product not found", 404));
   }
 
   res.status(200).json({
-    success: true,
+    status: "success",
+    message: "Product updated successfully",
     data: product,
   });
-};
+});
 
-exports.deleteProduct = async (req, res) => {
+exports.deleteProduct = asyncHandler(async (req, res, next) => {
   const product = await Product.findByIdAndDelete(req.params.id);
 
   if (!product) {
-    return res.status(404).json({
-      success: false,
-      message: "Product not found",
-    });
+    return next(new AppError("Product not found", 404));
   }
 
   res.status(200).json({
-    success: true,
+    status: "success",
     message: "Product deleted successfully",
+    data: null,
   });
-};
+});
