@@ -13,11 +13,11 @@ const errorHandler = (err, req, res, next) => {
     statusCode = 400;
     message = "Invalid ID";
   }
-
   if (err.code === 11000) {
-    statusCode = 400;
-    message = "Duplicate value";
-  }
+  statusCode = 409;
+  message = "Duplicate value already exists";
+}
+
 
   res.status(statusCode).json({
     success: false,
