@@ -3,12 +3,22 @@ const Product = require("../models/product.model");
 const AppError = require("../utils/appError");
 const asyncHandler = require("../utils/asyncHandler");
 
-// لأن المشروع لا يحتوي على Users حاليًا، سنستخدم Cart واحدة.
-const getOrCreateCart = async () => {
-  let cart = await Cart.findOne();
+const getSessionId = (req) => {
+  const sessionId = req.header("x-session-id");
+
+  if (!sessionId) {
+    throw new AppError("x-session-id header is required", 400);
+  }
+
+  return sessionId.trim();
+};
+
+const getOrCreateCart = async (sessionId) => {
+  let cart = await Cart.findOne({ sessionId });
 
   if (!cart) {
     cart = await Cart.create({
+      sessionId,
       items: [],
       totalPrice: 0,
     });
@@ -19,6 +29,7 @@ const getOrCreateCart = async () => {
 
 // POST /api/cart/items
 exports.addItemToCart = asyncHandler(async (req, res, next) => {
+  const sessionId = getSessionId(req);
   const { productId, quantity = 1 } = req.body;
 
   if (!productId) {
@@ -39,7 +50,7 @@ exports.addItemToCart = asyncHandler(async (req, res, next) => {
     return next(new AppError("Product is out of stock", 400));
   }
 
-  const cart = await getOrCreateCart();
+  const cart = await getOrCreateCart(sessionId);
 
   const existingItem = cart.items.find(
     (item) => item.product.toString() === productId,
@@ -55,8 +66,6 @@ exports.addItemToCart = asyncHandler(async (req, res, next) => {
     }
 
     existingItem.quantity = newQuantity;
-
-    // السعر يأتي دائمًا من قاعدة البيانات
     existingItem.price = product.price;
   } else {
     if (quantity > product.stock) {
@@ -84,6 +93,7 @@ exports.addItemToCart = asyncHandler(async (req, res, next) => {
 
 // PATCH /api/cart/items/:productId
 exports.updateCartItem = asyncHandler(async (req, res, next) => {
+  const sessionId = getSessionId(req);
   const { productId } = req.params;
   const { quantity } = req.body;
 
@@ -91,7 +101,7 @@ exports.updateCartItem = asyncHandler(async (req, res, next) => {
     return next(new AppError("Quantity must be a non-negative integer", 400));
   }
 
-  const cart = await getOrCreateCart();
+  const cart = await getOrCreateCart(sessionId);
 
   const itemIndex = cart.items.findIndex(
     (item) => item.product.toString() === productId,
@@ -101,7 +111,6 @@ exports.updateCartItem = asyncHandler(async (req, res, next) => {
     return next(new AppError("Product is not in the cart", 404));
   }
 
-  // لو الكمية أصبحت صفرًا، احذف المنتج تلقائيًا
   if (quantity === 0) {
     cart.items.splice(itemIndex, 1);
 
@@ -142,9 +151,10 @@ exports.updateCartItem = asyncHandler(async (req, res, next) => {
 
 // DELETE /api/cart/items/:productId
 exports.removeCartItem = asyncHandler(async (req, res, next) => {
+  const sessionId = getSessionId(req);
   const { productId } = req.params;
 
-  const cart = await getOrCreateCart();
+  const cart = await getOrCreateCart(sessionId);
 
   const itemIndex = cart.items.findIndex(
     (item) => item.product.toString() === productId,
@@ -168,11 +178,12 @@ exports.removeCartItem = asyncHandler(async (req, res, next) => {
 
 // GET /api/cart
 exports.getCart = asyncHandler(async (req, res) => {
-  let cart = await Cart.findOne().populate("items.product");
+  const sessionId = getSessionId(req);
+  let cart = await Cart.findOne({ sessionId }).populate("items.product");
 
-  // لو مفيش Cart، رجع Cart فاضية وليس 404
   if (!cart) {
     cart = await Cart.create({
+      sessionId,
       items: [],
       totalPrice: 0,
     });
@@ -188,7 +199,8 @@ exports.getCart = asyncHandler(async (req, res) => {
 
 // DELETE /api/cart
 exports.clearCart = asyncHandler(async (req, res) => {
-  const cart = await getOrCreateCart();
+  const sessionId = getSessionId(req);
+  const cart = await getOrCreateCart(sessionId);
 
   cart.items = [];
   cart.totalPrice = 0;

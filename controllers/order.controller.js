@@ -4,15 +4,26 @@ const Product = require("../models/product.model");
 const AppError = require("../utils/appError");
 const asyncHandler = require("../utils/asyncHandler");
 
+const getSessionId = (req) => {
+  const sessionId = req.header("x-session-id");
+
+  if (!sessionId) {
+    throw new AppError("x-session-id header is required", 400);
+  }
+
+  return sessionId.trim();
+};
+
 // POST /api/orders
 exports.checkout = asyncHandler(async (req, res, next) => {
+  const sessionId = getSessionId(req);
   const { shippingAddress } = req.body;
 
   if (!shippingAddress) {
     return next(new AppError("Shipping address is required", 400));
   }
 
-  const cart = await Cart.findOne().populate("items.product");
+  const cart = await Cart.findOne({ sessionId }).populate("items.product");
 
   if (!cart || cart.items.length === 0) {
     return next(new AppError("Cart is empty", 400));
@@ -29,12 +40,7 @@ exports.checkout = asyncHandler(async (req, res, next) => {
     }
 
     if (product.stock < item.quantity) {
-      return next(
-        new AppError(
-          `Not enough stock for ${product.name}`,
-          400
-        )
-      );
+      return next(new AppError(`Not enough stock for ${product.name}`, 400));
     }
 
     orderItems.push({

@@ -390,6 +390,11 @@
                 "key": "Content-Type",
                 "value": "application/json",
                 "type": "text"
+              },
+              {
+                "key": "x-session-id",
+                "value": "{{sessionId}}",
+                "type": "text"
               }
             ],
             "body": {
@@ -426,6 +431,11 @@
                 "key": "Content-Type",
                 "value": "application/json",
                 "type": "text"
+              },
+              {
+                "key": "x-session-id",
+                "value": "{{sessionId}}",
+                "type": "text"
               }
             ],
             "body": {
@@ -458,7 +468,13 @@
           "request": {
             "method": "DELETE",
             "description": "Remove a specific product from the cart.",
-            "header": [],
+            "header": [
+              {
+                "key": "x-session-id",
+                "value": "{{sessionId}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/api/cart/items/{{productId}}",
               "protocol": "http",
@@ -480,7 +496,13 @@
           "request": {
             "method": "GET",
             "description": "Fetch the current cart. If no cart exists yet, the API creates an empty cart.",
-            "header": [],
+            "header": [
+              {
+                "key": "x-session-id",
+                "value": "{{sessionId}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/api/cart",
               "protocol": "http",
@@ -500,7 +522,13 @@
           "request": {
             "method": "DELETE",
             "description": "Remove all items from the cart and reset the total price.",
-            "header": [],
+            "header": [
+              {
+                "key": "x-session-id",
+                "value": "{{sessionId}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/api/cart",
               "protocol": "http",
@@ -530,6 +558,11 @@
               {
                 "key": "Content-Type",
                 "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "x-session-id",
+                "value": "{{sessionId}}",
                 "type": "text"
               }
             ],

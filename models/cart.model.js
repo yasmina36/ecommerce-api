@@ -28,6 +28,13 @@ const cartItemSchema = new mongoose.Schema(
 
 const cartSchema = new mongoose.Schema(
   {
+    sessionId: {
+      type: String,
+      required: [true, "Session ID is required"],
+      unique: true,
+      trim: true,
+    },
+
     items: {
       type: [cartItemSchema],
       default: [],
