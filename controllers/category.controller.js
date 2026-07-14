@@ -6,8 +6,8 @@ exports.getAllCategories = asyncHandler(async (req, res) => {
   const categories = await Category.find();
 
   res.status(200).json({
-    success: true,
-    count: categories.length,
+    status: "success",
+    message: "Categories fetched successfully",
     data: categories,
   });
 });
@@ -20,7 +20,8 @@ exports.getCategoryById = asyncHandler(async (req, res, next) => {
   }
 
   res.status(200).json({
-    success: true,
+    status: "success",
+    message: "Category fetched successfully",
     data: category,
   });
 });
@@ -29,7 +30,8 @@ exports.createCategory = asyncHandler(async (req, res) => {
   const category = await Category.create(req.body);
 
   res.status(201).json({
-    success: true,
+    status: "success",
+    message: "Category created successfully",
     data: category,
   });
 });
@@ -53,7 +55,8 @@ exports.updateCategory = asyncHandler(async (req, res, next) => {
   }
 
   res.status(200).json({
-    success: true,
+    status: "success",
+    message: "Category updated successfully",
     data: category,
   });
 });
@@ -66,7 +69,8 @@ exports.deleteCategory = asyncHandler(async (req, res, next) => {
   }
 
   res.status(200).json({
-    success: true,
+    status: "success",
     message: "Category deleted successfully",
+    data: category,
   });
 });

@@ -1,5 +1,5 @@
-require("dotenv").config();
 const mongoose = require("mongoose");
+const connectDB = require("./db/connect");
 
 const Category = require("./models/category.model");
 const Cart = require("./models/cart.model");
@@ -8,8 +8,7 @@ const Product = require("./models/product.model");
 
 const seed = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log("MongoDB connected");
+    await connectDB();
 
     console.log("Deleting orders...");
     await Order.deleteMany();
