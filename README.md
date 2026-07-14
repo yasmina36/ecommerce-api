@@ -1,67 +1,50 @@
 # E-Commerce API
 
-RESTful e-commerce API built with Node.js, Express, and MongoDB. The project provides category, product, cart, and order modules with centralized error handling, MongoDB seeding, dynamic product filtering, and Postman documentation for local testing.
+RESTful e-commerce API built with Node.js, Express.js, MongoDB, and Mongoose. It provides category, product, cart, and order endpoints with filtering, session-based cart persistence, checkout, centralized error handling, and ready-to-import Postman files for local testing.
 
-## Features
-
-- Categories CRUD with unique names, generated slugs, and timestamps
-- Products CRUD with category references, stock tracking, and filtering
-- Single-cart workflow with quantity updates, stock validation, and total recalculation
-- Order checkout that copies product snapshots, decrements stock, and clears the cart
-- Centralized error handling for validation errors, cast errors, duplicate values, and unknown failures
-- Seed script for loading sample categories and products
-- Postman collection and environment for local API testing
-
-## Technology Stack
+## Tech Stack
 
 - Node.js
-- Express 5
+- Express.js
 - MongoDB
 - Mongoose
-- dotenv
-- express-mongo-sanitize
-- nodemon
 
-## API Modules
+## Main Features
 
-- Categories
-- Products
-- Cart
-- Orders
+- Categories API
+- Products API with filtering
+- Persistent session-based Cart API
+- Orders and checkout flow
+- Centralized error handling
+- Postman collection and environment
 
 ## Prerequisites
 
 - Node.js 18 or later
+- MongoDB running locally or a MongoDB Atlas connection string
 - npm
-- MongoDB connection string
 
 ## Installation
 
-### Clone the repository
+1. Clone the repository:
 
 ```bash
 git clone <your-repository-url>
+```
+
+2. Move into the project folder:
+
+```bash
 cd ecommerce-api
 ```
 
-### Install dependencies
+3. Install dependencies:
 
 ```bash
 npm install
 ```
 
-### Create and configure `.env`
-
-1. Copy `.env.example` to `.env`.
-2. Set the values for the environment variables below.
-
-| Variable | Required | Description |
-| --- | --- | --- |
-| `PORT` | Yes | Port used by the Express server |
-| `NODE_ENV` | Yes | Runtime environment such as `development` or `production` |
-| `MONGO_URI` | Yes | MongoDB connection string |
-
-Example:
+4. Create a `.env` file in the project root and add the required variables:
 
 ```env
 PORT=3000
@@ -69,40 +52,50 @@ NODE_ENV=development
 MONGO_URI=your_mongodb_connection_string
 ```
 
-## Running the Project
-
-### Seed the database
+5. Seed the database:
 
 ```bash
 npm run seed
 ```
 
-### Run in development mode
+6. Start the development server:
 
 ```bash
 npm run dev
 ```
 
-### Run in production mode
+Base URL:
 
-```bash
-npm start
+```text
+http://localhost:3000
 ```
+
+## Environment Variables
+
+| Variable | Required | Description |
+| --- | --- | --- |
+| `PORT` | Yes | Port used by the Express server |
+| `NODE_ENV` | Yes | Runtime environment such as `development` or `production` |
+| `MONGO_URI` | Yes | MongoDB connection string |
 
 ## Project Structure
 
 ```text
 ecommerce-api/
+|-- config/
+|   `-- config.js
 |-- controllers/
 |   |-- cart.controller.js
 |   |-- category.controller.js
 |   |-- order.controller.js
 |   `-- product.controller.js
+|-- db/
+|   `-- connect.js
 |-- middleware/
 |   `-- errorHandler.js
 |-- models/
-|   |-- category.model.js
 |   |-- cart.model.js
+|   |-- Category.model.js
 |   |-- order.model.js
 |   `-- product.model.js
 |-- postman/
@@ -116,6 +109,7 @@ ecommerce-api/
 |-- utils/
 |   |-- appError.js
 |   `-- asyncHandler.js
+|-- .env
 |-- .env.example
 |-- .gitignore
 |-- app.js
@@ -125,126 +119,102 @@ ecommerce-api/
 `-- server.js
 ```
 
+Folder explanation:
+
+- `config/`: application configuration such as `PORT`, `NODE_ENV`, and `MONGO_URI`
+- `controllers/`: request handlers for categories, products, cart, and orders
+- `db/`: MongoDB connection setup
+- `middleware/`: shared middleware such as centralized error handling
+- `models/`: Mongoose schemas and models
+- `postman/`: Postman collection and environment files
+- `routes/`: Express route definitions
+- `utils/`: reusable helpers such as `AppError` and async wrapper logic
+
 ## API Endpoints
 
-| Method | Endpoint | Description |
-| --- | --- | --- |
-| `GET` | `/api/categories` | Get all categories |
-| `GET` | `/api/categories/:id` | Get one category by ID |
-| `POST` | `/api/categories` | Create a category |
-| `PATCH` | `/api/categories/:id` | Update a category |
-| `DELETE` | `/api/categories/:id` | Delete a category |
-| `GET` | `/api/products` | Get all products |
-| `GET` | `/api/products/:id` | Get one product by ID |
-| `POST` | `/api/products` | Create a product |
-| `PATCH` | `/api/products/:id` | Update a product |
-| `DELETE` | `/api/products/:id` | Delete a product |
-| `POST` | `/api/cart/items` | Add an item to the cart |
-| `PATCH` | `/api/cart/items/:productId` | Update a cart item quantity |
-| `DELETE` | `/api/cart/items/:productId` | Remove an item from the cart |
-| `GET` | `/api/cart` | Get the current cart |
-| `DELETE` | `/api/cart` | Clear the cart |
-| `POST` | `/api/orders` | Checkout the cart and create an order |
-| `GET` | `/api/orders` | Get all orders |
-| `GET` | `/api/orders/:id` | Get one order by ID |
-| `PATCH` | `/api/orders/:id/status` | Update an order status |
+### Categories
 
-## Product Filtering Examples
+| Method | URL | Description |
+| --- | --- | --- |
+| `GET` | `http://localhost:3000/api/categories` | Get all categories |
+| `GET` | `http://localhost:3000/api/categories/:id` | Get one category by ID |
+| `POST` | `http://localhost:3000/api/categories` | Create a category |
+| `PATCH` | `http://localhost:3000/api/categories/:id` | Update a category |
+| `DELETE` | `http://localhost:3000/api/categories/:id` | Delete a category |
+
+### Products
+
+| Method | URL | Description |
+| --- | --- | --- |
+| `GET` | `http://localhost:3000/api/products` | Get all products |
+| `GET` | `http://localhost:3000/api/products/:id` | Get one product by ID |
+| `POST` | `http://localhost:3000/api/products` | Create a product |
+| `PATCH` | `http://localhost:3000/api/products/:id` | Update a product |
+| `DELETE` | `http://localhost:3000/api/products/:id` | Delete a product |
+
+Filtering examples:
 
 ```http
-GET /api/products?category=<categoryId>
-GET /api/products?minPrice=20&maxPrice=1000
-GET /api/products?inStock=true&search=book
-GET /api/products?category=<categoryId>&minPrice=20&maxPrice=1000&inStock=true&search=book
+GET http://localhost:3000/api/products?category=<categoryId>
+GET http://localhost:3000/api/products?minPrice=20&maxPrice=1000
+GET http://localhost:3000/api/products?inStock=true&search=book
+GET http://localhost:3000/api/products?category=<categoryId>&minPrice=20&maxPrice=1000&inStock=true&search=book
 ```
 
-Supported query parameters:
+### Cart
 
-- `category`
-- `minPrice`
-- `maxPrice`
-- `inStock`
-- `search`
+Cart requests require this header:
 
-## Example Request Bodies
+```http
+x-session-id: user-1
+```
 
-### Create category
+| Method | URL | Description |
+| --- | --- | --- |
+| `GET` | `http://localhost:3000/api/cart` | Get the current session cart |
+| `DELETE` | `http://localhost:3000/api/cart` | Clear the current session cart |
+| `POST` | `http://localhost:3000/api/cart/items` | Add an item to the current session cart |
+| `PATCH` | `http://localhost:3000/api/cart/items/:productId` | Update a cart item quantity for the current session cart |
+| `DELETE` | `http://localhost:3000/api/cart/items/:productId` | Remove an item from the current session cart |
+
+### Orders
+
+Checkout requires this header:
+
+```http
+x-session-id: user-1
+```
+
+| Method | URL | Description |
+| --- | --- | --- |
+| `POST` | `http://localhost:3000/api/orders` | Checkout the current session cart and create an order |
+| `GET` | `http://localhost:3000/api/orders` | Get all orders |
+| `GET` | `http://localhost:3000/api/orders/:id` | Get one order by ID |
+| `PATCH` | `http://localhost:3000/api/orders/:id/status` | Update an order status |
+
+Current checkout `shippingAddress` format:
 
 ```json
 {
-  "name": "Books",
-  "description": "Printed books, eBooks, and reading accessories"
-}
-```
-
-### Create product
-
-```json
-{
-  "name": "Node.js Design Patterns",
-  "description": "A practical guide to scalable Node.js applications",
-  "price": 49.99,
-  "stock": 25,
-  "category": "<categoryId>",
-  "images": [
-    "https://example.com/images/nodejs-design-patterns-front.jpg"
-  ]
-}
-```
-
-### Add item to cart
-
-```json
-{
-  "productId": "<productId>",
-  "quantity": 2
-}
-```
-
-### Create order
-
-```json
-{
-  "shippingAddress": "123 Tahrir Street, Cairo, Egypt"
-}
-```
-
-## Example Responses
-
-### Success response
-
-```json
-{
-  "success": true,
-  "data": {
-    "_id": "687112233445566778899001",
-    "name": "Books",
-    "description": "Printed books, eBooks, and reading accessories",
-    "slug": "books"
+  "shippingAddress": {
+    "street": "10 Main Street",
+    "city": "Cairo",
+    "country": "Egypt"
   }
 }
 ```
 
-### Error response
+Current status update example:
 
 ```json
 {
-  "success": false,
-  "message": "Category not found"
+  "status": "confirmed"
 }
 ```
 
-## Validation and Error Handling
-
-- Mongoose schema validation is used for required fields, minimum values, enums, trimming, and unique category names.
-- `AppError` is used for operational API errors such as missing resources and invalid business rules.
-- The centralized error handler returns structured JSON for validation errors, invalid MongoDB IDs, duplicate values, and unexpected server errors.
-- Unknown routes are handled after route registration and return a `404` JSON response.
-- `express-mongo-sanitize` is enabled after JSON parsing to strip dangerous MongoDB operators from request payloads.
-
 ## Postman
 
-The project includes a ready-to-import Postman collection and environment:
+Included files:
 
 - `postman/E-Commerce-API.postman_collection.json`
 - `postman/E-Commerce-API-Dev.postman_environment.json`
@@ -252,13 +222,16 @@ The project includes a ready-to-import Postman collection and environment:
 Import steps:
 
 1. Open Postman.
-2. Import the collection file.
-3. Import the environment file.
+2. Import `postman/E-Commerce-API.postman_collection.json`.
+3. Import `postman/E-Commerce-API-Dev.postman_environment.json`.
 4. Select the `E-Commerce API Dev` environment.
-5. Set `categoryId`, `productId`, and `orderId` after creating records.
+5. Confirm `baseUrl` is `http://localhost:3000`.
+6. Use the default `sessionId` value or change it as needed for another cart session.
+7. Set `categoryId`, `productId`, and `orderId` after creating records.
 
 ## Notes
 
-- The API does not include authentication because it is not part of the current project scope.
-- Cart behavior is currently single-cart based and not tied to users.
-- Order totals and stock updates are always calculated server-side.
+- The project does not use authentication or JWT.
+- The project does not use `paymentMethod`.
+- Cart and checkout remain session-based through the `x-session-id` header.
+- Order totals are always calculated server-side.
