@@ -10,6 +10,7 @@ const productSchema = new mongoose.Schema(
 
     description: {
       type: String,
+      required: [true, "Product description is required"],
       trim: true,
     },
 
@@ -21,6 +22,7 @@ const productSchema = new mongoose.Schema(
 
     stock: {
       type: Number,
+      required: [true, "Product stock is required"],
       default: 0,
       min: [0, "Product stock cannot be less than 0"],
     },
@@ -35,19 +37,16 @@ const productSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
-
-    inStock: {
-      type: Boolean,
-      default: true,
-    },
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
 
-productSchema.pre("save", function () {
-  this.inStock = this.stock > 0;
+productSchema.virtual("inStock").get(function () {
+  return this.stock > 0;
 });
 
 const Product = mongoose.model("Product", productSchema);
