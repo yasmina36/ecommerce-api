@@ -1,5 +1,5 @@
 const Product = require("../models/product.model");
-const Category = require("../models/Category.model");
+const Category = require("../models/category.model");
 
 exports.getAllProducts = async (req, res) => {
   const filter = {};
@@ -20,8 +20,13 @@ exports.getAllProducts = async (req, res) => {
     }
   }
 
-  if (req.query.inStock !== undefined) {
-    filter.inStock = req.query.inStock === "true";
+  // inStock is a virtual field, so filter using stock instead.
+  if (req.query.inStock === "true") {
+    filter.stock = { $gt: 0 };
+  }
+
+  if (req.query.inStock === "false") {
+    filter.stock = 0;
   }
 
   if (req.query.search) {
@@ -43,7 +48,7 @@ exports.getAllProducts = async (req, res) => {
 
   const products = await Product.find(filter).populate(
     "category",
-    "name description",
+    "name description"
   );
 
   res.status(200).json({
@@ -56,7 +61,7 @@ exports.getAllProducts = async (req, res) => {
 exports.getProductById = async (req, res) => {
   const product = await Product.findById(req.params.id).populate(
     "category",
-    "name description",
+    "name description"
   );
 
   if (!product) {
@@ -102,14 +107,14 @@ exports.updateProduct = async (req, res) => {
     }
   }
 
-  if (req.body.stock !== undefined) {
-    req.body.inStock = req.body.stock > 0;
-  }
-
-  const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  }).populate("category");
+  const product = await Product.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    }
+  ).populate("category", "name description");
 
   if (!product) {
     return res.status(404).json({

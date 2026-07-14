@@ -101,7 +101,7 @@ ecommerce-api/
 |-- middleware/
 |   `-- errorHandler.js
 |-- models/
-|   |-- Category.model.js
+|   |-- category.model.js
 |   |-- cart.model.js
 |   |-- order.model.js
 |   `-- product.model.js
