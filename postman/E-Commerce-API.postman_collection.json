@@ -568,7 +568,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"shippingAddress\": \"123 Tahrir Street, Cairo, Egypt\"\n}",
+              "raw": "{\n  \"shippingAddress\": {\n    \"street\": \"10 Main Street\",\n    \"city\": \"Cairo\",\n    \"country\": \"Egypt\"\n  }\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -644,7 +644,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"status\": \"processing\"\n}",
+              "raw": "{\n  \"status\": \"confirmed\"\n}",
               "options": {
                 "raw": {
                   "language": "json"

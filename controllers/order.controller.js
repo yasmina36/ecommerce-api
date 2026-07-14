@@ -19,7 +19,12 @@ exports.checkout = asyncHandler(async (req, res, next) => {
   const sessionId = getSessionId(req);
   const { shippingAddress } = req.body;
 
-  if (!shippingAddress) {
+  if (
+    !shippingAddress ||
+    !shippingAddress.street ||
+    !shippingAddress.city ||
+    !shippingAddress.country
+  ) {
     return next(new AppError("Shipping address is required", 400));
   }
 
@@ -40,12 +45,18 @@ exports.checkout = asyncHandler(async (req, res, next) => {
     }
 
     if (product.stock < item.quantity) {
-      return next(new AppError(`Not enough stock for ${product.name}`, 400));
+      return next(
+        new AppError(
+          `Not enough stock for ${product.name}. Only ${product.stock} available`,
+          400
+        )
+      );
     }
 
     orderItems.push({
       product: product._id,
       name: product.name,
+      image: product.images[0] || "",
       price: product.price,
       quantity: item.quantity,
     });
@@ -66,8 +77,6 @@ exports.checkout = asyncHandler(async (req, res, next) => {
     const product = await Product.findById(item.product);
 
     product.stock -= item.quantity;
-    product.inStock = product.stock > 0;
-
     await product.save();
   }
 
@@ -113,7 +122,7 @@ exports.updateOrderStatus = asyncHandler(async (req, res, next) => {
 
   const allowedStatuses = [
     "pending",
-    "processing",
+    "confirmed",
     "shipped",
     "delivered",
     "cancelled",

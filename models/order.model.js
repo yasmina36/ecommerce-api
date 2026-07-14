@@ -14,6 +14,12 @@ const orderItemSchema = new mongoose.Schema(
       trim: true,
     },
 
+    image: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
     price: {
       type: Number,
       required: [true, "Product price is required"],
@@ -61,7 +67,7 @@ const orderSchema = new mongoose.Schema(
       enum: {
         values: [
           "pending",
-          "processing",
+          "confirmed",
           "shipped",
           "delivered",
           "cancelled",
@@ -72,9 +78,21 @@ const orderSchema = new mongoose.Schema(
     },
 
     shippingAddress: {
-      type: String,
-      required: [true, "Shipping address is required"],
-      trim: true,
+      street: {
+        type: String,
+        required: [true, "Street is required"],
+        trim: true,
+      },
+      city: {
+        type: String,
+        required: [true, "City is required"],
+        trim: true,
+      },
+      country: {
+        type: String,
+        required: [true, "Country is required"],
+        trim: true,
+      },
     },
   },
   {
