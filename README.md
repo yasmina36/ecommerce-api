@@ -1,6 +1,10 @@
+
 # E-Commerce API
 
-RESTful e-commerce API built with Node.js, Express.js, MongoDB, and Mongoose. It provides category, product, cart, and order endpoints with filtering, session-based cart persistence, checkout, centralized error handling, and ready-to-import Postman files for local testing.
+GitHub Repository:
+https://github.com/yasmina36/ecommerce-api
+
+RESTful e-commerce API built with Node.js, Express.js, MongoDB, and Mongoose...
 
 ## Tech Stack
 
@@ -72,11 +76,11 @@ http://localhost:3000
 
 ## Environment Variables
 
-| Variable | Required | Description |
-| --- | --- | --- |
-| `PORT` | Yes | Port used by the Express server |
-| `NODE_ENV` | Yes | Runtime environment such as `development` or `production` |
-| `MONGO_URI` | Yes | MongoDB connection string |
+| Variable    | Required | Description                                               |
+| ----------- | -------- | --------------------------------------------------------- |
+| `PORT`      | Yes      | Port used by the Express server                           |
+| `NODE_ENV`  | Yes      | Runtime environment such as `development` or `production` |
+| `MONGO_URI` | Yes      | MongoDB connection string                                 |
 
 ## Project Structure
 
@@ -95,7 +99,7 @@ ecommerce-api/
 |   `-- errorHandler.js
 |-- models/
 |   |-- cart.model.js
-|   |-- Category.model.js
+|   |-- category.model.js
 |   |-- order.model.js
 |   `-- product.model.js
 |-- postman/
@@ -134,23 +138,23 @@ Folder explanation:
 
 ### Categories
 
-| Method | URL | Description |
-| --- | --- | --- |
-| `GET` | `http://localhost:3000/api/categories` | Get all categories |
-| `GET` | `http://localhost:3000/api/categories/:id` | Get one category by ID |
-| `POST` | `http://localhost:3000/api/categories` | Create a category |
-| `PATCH` | `http://localhost:3000/api/categories/:id` | Update a category |
-| `DELETE` | `http://localhost:3000/api/categories/:id` | Delete a category |
+| Method   | URL                                        | Description            |
+| -------- | ------------------------------------------ | ---------------------- |
+| `GET`    | `http://localhost:3000/api/categories`     | Get all categories     |
+| `GET`    | `http://localhost:3000/api/categories/:id` | Get one category by ID |
+| `POST`   | `http://localhost:3000/api/categories`     | Create a category      |
+| `PATCH`  | `http://localhost:3000/api/categories/:id` | Update a category      |
+| `DELETE` | `http://localhost:3000/api/categories/:id` | Delete a category      |
 
 ### Products
 
-| Method | URL | Description |
-| --- | --- | --- |
-| `GET` | `http://localhost:3000/api/products` | Get all products |
-| `GET` | `http://localhost:3000/api/products/:id` | Get one product by ID |
-| `POST` | `http://localhost:3000/api/products` | Create a product |
-| `PATCH` | `http://localhost:3000/api/products/:id` | Update a product |
-| `DELETE` | `http://localhost:3000/api/products/:id` | Delete a product |
+| Method   | URL                                      | Description           |
+| -------- | ---------------------------------------- | --------------------- |
+| `GET`    | `http://localhost:3000/api/products`     | Get all products      |
+| `GET`    | `http://localhost:3000/api/products/:id` | Get one product by ID |
+| `POST`   | `http://localhost:3000/api/products`     | Create a product      |
+| `PATCH`  | `http://localhost:3000/api/products/:id` | Update a product      |
+| `DELETE` | `http://localhost:3000/api/products/:id` | Delete a product      |
 
 Filtering examples:
 
@@ -169,13 +173,13 @@ Cart requests require this header:
 x-session-id: user-1
 ```
 
-| Method | URL | Description |
-| --- | --- | --- |
-| `GET` | `http://localhost:3000/api/cart` | Get the current session cart |
-| `DELETE` | `http://localhost:3000/api/cart` | Clear the current session cart |
-| `POST` | `http://localhost:3000/api/cart/items` | Add an item to the current session cart |
-| `PATCH` | `http://localhost:3000/api/cart/items/:productId` | Update a cart item quantity for the current session cart |
-| `DELETE` | `http://localhost:3000/api/cart/items/:productId` | Remove an item from the current session cart |
+| Method   | URL                                               | Description                                              |
+| -------- | ------------------------------------------------- | -------------------------------------------------------- |
+| `GET`    | `http://localhost:3000/api/cart`                  | Get the current session cart                             |
+| `DELETE` | `http://localhost:3000/api/cart`                  | Clear the current session cart                           |
+| `POST`   | `http://localhost:3000/api/cart/items`            | Add an item to the current session cart                  |
+| `PATCH`  | `http://localhost:3000/api/cart/items/:productId` | Update a cart item quantity for the current session cart |
+| `DELETE` | `http://localhost:3000/api/cart/items/:productId` | Remove an item from the current session cart             |
 
 ### Orders
 
@@ -185,12 +189,12 @@ Checkout requires this header:
 x-session-id: user-1
 ```
 
-| Method | URL | Description |
-| --- | --- | --- |
-| `POST` | `http://localhost:3000/api/orders` | Checkout the current session cart and create an order |
-| `GET` | `http://localhost:3000/api/orders` | Get all orders |
-| `GET` | `http://localhost:3000/api/orders/:id` | Get one order by ID |
-| `PATCH` | `http://localhost:3000/api/orders/:id/status` | Update an order status |
+| Method  | URL                                           | Description                                           |
+| ------- | --------------------------------------------- | ----------------------------------------------------- |
+| `POST`  | `http://localhost:3000/api/orders`            | Checkout the current session cart and create an order |
+| `GET`   | `http://localhost:3000/api/orders`            | Get all orders                                        |
+| `GET`   | `http://localhost:3000/api/orders/:id`        | Get one order by ID                                   |
+| `PATCH` | `http://localhost:3000/api/orders/:id/status` | Update an order status                                |
 
 Current checkout `shippingAddress` format:
 
