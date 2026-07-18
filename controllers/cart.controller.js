@@ -85,7 +85,7 @@ exports.addItemToCart = asyncHandler(async (req, res, next) => {
   await cart.populate("items.product");
 
   res.status(200).json({
-    success: true,
+    status: "success",
     message: "Item added to cart successfully",
     data: cart,
   });
@@ -118,7 +118,7 @@ exports.updateCartItem = asyncHandler(async (req, res, next) => {
     await cart.populate("items.product");
 
     return res.status(200).json({
-      success: true,
+      status: "success",
       message: "Item removed from cart because quantity became 0",
       data: cart,
     });
@@ -143,7 +143,7 @@ exports.updateCartItem = asyncHandler(async (req, res, next) => {
   await cart.populate("items.product");
 
   res.status(200).json({
-    success: true,
+    status: "success",
     message: "Cart item updated successfully",
     data: cart,
   });
@@ -170,7 +170,7 @@ exports.removeCartItem = asyncHandler(async (req, res, next) => {
   await cart.populate("items.product");
 
   res.status(200).json({
-    success: true,
+    status: "success",
     message: "Item removed from cart successfully",
     data: cart,
   });
@@ -192,7 +192,8 @@ exports.getCart = asyncHandler(async (req, res) => {
   }
 
   res.status(200).json({
-    success: true,
+    status: "success",
+    message: "Cart retrieved successfully",
     data: cart,
   });
 });
@@ -208,7 +209,7 @@ exports.clearCart = asyncHandler(async (req, res) => {
   await cart.save();
 
   res.status(200).json({
-    success: true,
+    status: "success",
     message: "Cart cleared successfully",
     data: cart,
   });

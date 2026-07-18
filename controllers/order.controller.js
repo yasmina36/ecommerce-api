@@ -48,8 +48,8 @@ exports.checkout = asyncHandler(async (req, res, next) => {
       return next(
         new AppError(
           `Not enough stock for ${product.name}. Only ${product.stock} available`,
-          400
-        )
+          400,
+        ),
       );
     }
 
@@ -85,7 +85,7 @@ exports.checkout = asyncHandler(async (req, res, next) => {
   await cart.save();
 
   res.status(201).json({
-    success: true,
+    status: "success",
     message: "Order created successfully",
     data: order,
   });
@@ -96,8 +96,8 @@ exports.getAllOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find().sort({ createdAt: -1 });
 
   res.status(200).json({
-    success: true,
-    count: orders.length,
+    status: "success",
+    message: "Orders retrieved successfully",
     data: orders,
   });
 });
@@ -111,7 +111,8 @@ exports.getOrderById = asyncHandler(async (req, res, next) => {
   }
 
   res.status(200).json({
-    success: true,
+    status: "success",
+    message: "Order retrieved successfully",
     data: order,
   });
 });
@@ -138,7 +139,7 @@ exports.updateOrderStatus = asyncHandler(async (req, res, next) => {
     {
       new: true,
       runValidators: true,
-    }
+    },
   );
 
   if (!order) {
@@ -146,7 +147,7 @@ exports.updateOrderStatus = asyncHandler(async (req, res, next) => {
   }
 
   res.status(200).json({
-    success: true,
+    status: "success",
     message: "Order status updated successfully",
     data: order,
   });
