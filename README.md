@@ -1,10 +1,9 @@
-
 # E-Commerce API
 
 GitHub Repository:
 https://github.com/yasmina36/ecommerce-api
 
-RESTful e-commerce API built with Node.js, Express.js, MongoDB, and Mongoose...
+RESTful e-commerce API built with Node.js, Express.js, MongoDB, and Mongoose. It provides category, product, cart, and order endpoints with filtering, session-based cart persistence, checkout, centralized error handling, and ready-to-import Postman files for local testing.
 
 ## Tech Stack
 
@@ -33,7 +32,7 @@ RESTful e-commerce API built with Node.js, Express.js, MongoDB, and Mongoose...
 1. Clone the repository:
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/yasmina36/ecommerce-api.git
 ```
 
 2. Move into the project folder:
